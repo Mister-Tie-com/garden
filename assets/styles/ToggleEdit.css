@@ -1,0 +1,88 @@
+.menu-editor {
+    position: relative;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    background-color: var(--secondary-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+.toggle-editor, .toggle-geoloc {
+    position: relative;
+    display: flex;
+    padding: 8px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.toggle-editor .toggle-input {
+    display: none;
+}
+
+.toggle-text {
+    display: flex;
+    color: var(--primary-color);
+    margin-right: 5px;
+}
+
+.toggle-label {
+    position: relative;
+    display: flex;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 24px;
+    background-color: var(--main-color);
+    border-radius: 34px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.toggle-label::before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s;
+}
+
+.toggle-editor .toggle-input:checked + .toggle-label {
+    background-color: #4CAF50;
+}
+
+.toggle-editor .toggle-input:checked + .toggle-label::before {
+    transform: translateX(21px);
+}
+
+.toggle-editor.light .toggle-label {
+    background-color: #BEBEBE;
+}
+
+.toggle-editor.light .toggle-input:checked + .toggle-label {
+    background-color: #9B9B9B;
+}
+
+.toggle-editor.light .toggle-input:checked + .toggle-label::before {
+    transform: translateX(6px);
+}
+
+.toggle-editor.dark .toggle-label {
+    background-color: #4B4B4B;
+}
+
+.toggle-editor.dark .toggle-input:checked + .toggle-label {
+    background-color: #717171;
+}
+
+.toggle-editor.dark .toggle-input:checked + .toggle-label::before {
+    transform: translateX(21px);
+}

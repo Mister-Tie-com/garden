@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% if is_editor %}Editor{% else %}Map{% endif %}
+{% endblock %}
+
+{% block head %}
+    {{ encore_entry_link_tags('app') }}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        window.editor = {{ is_editor|json_encode  }};
+    </script>
+{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')%}
+    <div class="bg bg-left user-menu">
+        <h3 class="user-loged">USER: {{ app.user.userIdentifier }}</h3>
+        <div>
+            <a class="home-button home-button-logout buttons" href="{{ path('logout') }}">Logout</a>
+            {% if app.request.get('_route') != 'editor' and is_granted('ROLE_ADMIN') %}
+                <a class="home-button home-button-logout buttons" href="{{ path('editor') }}">Editor</a>
+            {% else %}
+                {% if is_granted('ROLE_ADMIN') %}
+                <a class="home-button home-button-logout buttons" href="{{ path('map') }}">Map</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <div id="root"
+         class="mapbox">
+    </div>
+    {% endif %}
+{% endblock %}

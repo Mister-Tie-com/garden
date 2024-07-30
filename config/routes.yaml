@@ -1,3 +1,11 @@
+index:
+    path: /
+    controller: App\Controller\LoginController::index
+
+authentication_token:
+    path: /authentication_token
+    methods: [ 'POST' ]
+
 controllers:
     resource:
         path: ../src/Controller/

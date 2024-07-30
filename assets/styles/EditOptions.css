@@ -1,0 +1,14 @@
+.edit-button {
+    color: var(--main-color);
+    background-color: var(--secondary-color);
+    transition: all 0.3s ease-in-out;
+    border-radius: 5px;
+    border: none;
+    margin: 5px;
+    padding: 5px;
+    cursor: pointer;
+}
+.edit-button:hover {
+    color: white;
+    background-color: var(--main-color);
+}

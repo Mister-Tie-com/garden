@@ -1,0 +1,47 @@
+.popup-button{
+    position: relative;
+}
+
+.popup-button a{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-size: 10px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 5px;
+    color: #333;
+    border: 2px solid #333;
+    letter-spacing: 2px;
+    text-align: center;
+    position: relative;
+    transition: all .35s;
+    cursor: pointer;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+.popup-button a span{
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.popup-button a:after{
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background: var(--main-color);
+    transition: all .35s;
+}
+
+.popup-button a:hover{
+    color: #fff;
+}
+
+.popup-button a:hover:after{
+    width: 100%;
+}

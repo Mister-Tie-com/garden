@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+    <div class="center">
+        <h1>Garden</h1>
+
+        {% if error %}
+            <p class="error-login">{{ error.messageKey|trans(error.messageData, 'security') }}</p>
+        {% endif %}
+
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER') %}
+                <div class="container">
+                    <h2 class="user-loged">USER: {{ app.user.userIdentifier }}</h2>
+                    <a class="home-button home-button-logout buttons" href="{{ path('map') }}">
+                        Accéder à la carte
+                    </a>
+                    <hr>
+                    <a class="home-button home-button-logout buttons" href="{{ path('logout') }}">
+                        logout
+                    </a>
+                </div>
+            {% endif %}
+        {% else %}
+            <form action="{{ path('login') }}" method="post">
+                <label for="email">Email:</label>
+                <input class="custom-input"
+                       type="text"
+                       id="email"
+                       name="_username"/>
+
+                <label for="password">Password:</label>
+                <input class="custom-input"
+                       type="password"
+                       id="password"
+                       name="_password"/>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button class="home-button home-button-login" type="submit">login</button>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

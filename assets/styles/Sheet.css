@@ -1,0 +1,30 @@
+.sheet-app {
+    position: absolute;
+    width: 25%;
+    height: auto;
+    padding: 10px;
+    margin: 0 10px 50px 0;
+    bottom: 0;
+    right: -100%;
+    opacity: 0;
+    background-color: black;
+    transition: all 0.3s ease-out;
+    border-radius: 10px 0 10px 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    z-index: 100;
+}
+
+.show-sheet {
+    right: 0;
+    opacity: 1;
+}
+
+.sheet-img {
+    display: flex;
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    background-color: gray;
+    border-radius: 5px;
+    margin: 5px 0;
+}

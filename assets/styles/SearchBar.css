@@ -1,0 +1,32 @@
+.custom-input {
+    border: 1px solid var(--primary-color);
+    outline:0;
+    padding: 9px;
+    margin: 5px 0;
+    width: 200px;
+    border-radius: 5px;
+}
+
+.custom-input:hover {
+    border: 1px solid var(--main-color);
+}
+
+.custom-button {
+    width: 100%;
+    outline: 0;
+    padding: 9px;
+    margin: 5px 0;
+    border-radius: 3px;
+    color: white;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    background-color: var(--primary-color);
+}
+
+.search-bar {
+    display: flex;
+    flex-direction: column;
+}
