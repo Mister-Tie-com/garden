@@ -39,6 +39,10 @@ class Marker
     #[ORM\Column(length: 255)]
     private ?string $link = null;
 
+    #[ORM\ManyToOne(targetEntity:User::class, inversedBy: 'markers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,6 +140,18 @@ class Marker
     public function setLink(string $link): static
     {
         $this->link = $link;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

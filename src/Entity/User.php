@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -30,6 +32,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, Marker>
+     */
+    #[ORM\OneToMany(targetEntity: Marker::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $markers;
+
+    public function __construct()
+    {
+        $this->markers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -104,5 +117,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Marker>
+     */
+    public function getMarkers(): Collection
+    {
+        return $this->markers;
+    }
+
+    public function addMarker(Marker $marker): static
+    {
+        if (!$this->markers->contains($marker)) {
+            $this->markers->add($marker);
+            $marker->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMarker(Marker $marker): static
+    {
+        if ($this->markers->removeElement($marker)) {
+            // set the owning side to null (unless already changed)
+            if ($marker->getUser() === $this) {
+                $marker->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

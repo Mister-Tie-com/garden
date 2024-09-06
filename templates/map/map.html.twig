@@ -21,12 +21,10 @@
         <h3 class="user-loged">USER: {{ app.user.userIdentifier }}</h3>
         <div>
             <a class="home-button home-button-logout buttons" href="{{ path('logout') }}">Logout</a>
-            {% if app.request.get('_route') != 'editor' and is_granted('ROLE_ADMIN') %}
+            {% if app.request.get('_route') != 'editor' %}
                 <a class="home-button home-button-logout buttons" href="{{ path('editor') }}">Editor</a>
             {% else %}
-                {% if is_granted('ROLE_ADMIN') %}
                 <a class="home-button home-button-logout buttons" href="{{ path('map') }}">Map</a>
-                {% endif %}
             {% endif %}
         </div>
     </div>

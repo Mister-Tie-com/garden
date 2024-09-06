@@ -29,16 +29,23 @@ class MarkerController extends AbstractController
         $latitude = $request->query->get('latitude');
         $longitude = $request->query->get('longitude');
         $radius = $request->query->get('radius');
+        $user = $this->getUser();
 
-        if (!empty($latitude) && !empty($longitude)) {
-            $markers = $this->markerRepository->findNearestMarkers(
-                $latitude,
-                $longitude,
-                $radius
-            );
-        } else {
-            $markers = $this->markerRepository->findAll();
+        if (!$user) {
+            return new JsonResponse([
+                'error' => 'User not authenticated'
+            ], Response::HTTP_UNAUTHORIZED);
         }
+
+        $isAdmin = $this->isGranted('ROLE_ADMIN');
+
+        $markers = $this->markerRepository->findNearestMarkers(
+            $user,
+            $latitude,
+            $longitude,
+            $radius,
+            $isAdmin
+        );
 
         foreach ($markers as $marker) {
             $data[] = [
@@ -51,6 +58,7 @@ class MarkerController extends AbstractController
                 'createdAt' => $marker->getCreatedAt(),
                 'latitude' => $marker->getLatitude(),
                 'longitude' => $marker->getLongitude(),
+                'user' => $isAdmin ? $marker->getUser()->getEmail() : null,
             ];
         }
 
@@ -63,6 +71,7 @@ class MarkerController extends AbstractController
         EntityManagerInterface $em
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
+        $user = $this->getUser();
 
         $marker = new Marker();
         $marker->setLatitude($data['latitude']);
@@ -73,6 +82,7 @@ class MarkerController extends AbstractController
         $marker->setPhoto($data['photo'] ?? '');
         $marker->setLink($data['link'] ?? '');
         $marker->setCreatedAt(new DateTime());
+        $marker->setUser($user);
 
         $em->persist($marker);
         $em->flush();
@@ -100,6 +110,7 @@ class MarkerController extends AbstractController
         EntityManagerInterface $em
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
+        $user = $this->getUser();
         $marker = $markerRepository->find($id);
 
         if (!$marker) {
@@ -116,6 +127,7 @@ class MarkerController extends AbstractController
         $marker->setTypeId($data['type_id'] ?? null);
         $marker->setPhoto($data['photo'] ?? null);
         $marker->setLink($data['link'] ?? null);
+        $marker->setUser($user);
 
         $em->flush();
 
