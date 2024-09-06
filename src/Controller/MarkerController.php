@@ -110,7 +110,6 @@ class MarkerController extends AbstractController
         EntityManagerInterface $em
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
-        $user = $this->getUser();
         $marker = $markerRepository->find($id);
 
         if (!$marker) {
@@ -127,7 +126,6 @@ class MarkerController extends AbstractController
         $marker->setTypeId($data['type_id'] ?? null);
         $marker->setPhoto($data['photo'] ?? null);
         $marker->setLink($data['link'] ?? null);
-        $marker->setUser($user);
 
         $em->flush();
 

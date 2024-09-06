@@ -196,6 +196,16 @@ h1{
     overflow: hidden;
 }
 
+.popup-user {
+    display: flex;
+    justify-content: center;
+    color: black;
+    font-size: 0.9em;
+    text-align: center;
+    margin-top: 10px;
+}
+
+
 .popup-type {
     color: black;
     font-size: 0.9em;
@@ -214,6 +224,7 @@ h1{
 }
 
 .mapboxgl-popup{
+    width: 240px;
     pointer-events: none;
 }
 

@@ -255,6 +255,13 @@ function Map({
             popupContent.appendChild(button);
         }
 
+        if(data.user !== undefined && data.user !== null) {
+            const user = document.createElement('span');
+            user.textContent = 'user: ' + data.user;
+            user.className = 'popup-user';
+            popupContent.appendChild(user);
+        }
+
         const popup = new mapboxgl.Popup({
             offset: 40,
             closeButton: false,

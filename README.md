@@ -20,6 +20,7 @@ Symfony and React project to display 3D map
 - Add Search box (based on title or description)
 - Add Doctrine extention beberlei for trigonometric function
 - Update marker repository to get marker nearest from camera position
+- Link marker to users (admin can see all markers) 
 
 # JWT 
 GENERATE KEYS : php bin/console lexik:jwt:generate-keypair
