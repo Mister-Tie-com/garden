@@ -26,8 +26,8 @@ class MarkerRepository extends ServiceEntityRepository
     public function findNearestMarkers(
         float $latitude,
         float $longitude,
-        float $radius)
-    : array {
+        float $radius
+    ): array {
         $radiusInMeters = round($radius);
 
         return $this->createQueryBuilder('m')

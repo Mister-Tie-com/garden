@@ -2,9 +2,9 @@
 Symfony and React project to display 3D map
 
 # Version
-Php 8.2
-Symfony 7.1
-React 18.3.1
+- Php 8.2
+- Symfony 7.1
+- React 18.3.1
 
 # Dependancies
 [mapbox-gl](https://docs.mapbox.com/mapbox-gl-js/api/map/)
@@ -25,6 +25,10 @@ React 18.3.1
 GENERATE KEYS : php bin/console lexik:jwt:generate-keypair
 
 # migration
-php bin/console doctrine:migrations:migrate
-php bin/console doctrine:migrations:status
+- Migrate : php bin/console doctrine:migrations:migrate
+- Check migration status : php bin/console doctrine:migrations:status
+
+# php code snifer
+- Check files : phpcs --standard=phpcs.xml
+- Correct files : phpcbf --standard=phpcs.xml
 
