@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add User{% endblock %}
+
+{% block body %}
+    <div class="user-management">
+        <h1>Add a New User</h1>
+
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="custom-button buttons">Save</button>
+        {{ form_end(form) }}
+
+        <a href="{{ path('admin_user_list') }}" class="btn btn-secondary">Back to user list</a>
+    </div>
+{% endblock %}

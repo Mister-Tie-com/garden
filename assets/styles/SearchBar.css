@@ -3,7 +3,7 @@
     outline:0;
     padding: 9px;
     margin: 5px 0;
-    width: 200px;
+    width: -webkit-fill-available;
     border-radius: 5px;
     text-align: left;
     font-size: 12px;
@@ -31,4 +31,9 @@
 .search-bar {
     display: flex;
     flex-direction: column;
+    width: 100%;
+}
+
+textarea{
+    resize: none;
 }

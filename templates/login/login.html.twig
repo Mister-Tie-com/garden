@@ -15,9 +15,15 @@
                 <div class="container">
                     <h2 class="user-loged">USER: {{ app.user.userIdentifier }}</h2>
                     <a class="home-button home-button-logout buttons" href="{{ path('map') }}">
-                        Accéder à la carte
+                        Access to map
                     </a>
                     <hr>
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <a class="home-button home-button-logout buttons" href="{{ path('admin_user_list') }}">
+                      Users management
+                    </a>
+                    <hr>
+                    {% endif %}
                     <a class="home-button home-button-logout buttons" href="{{ path('logout') }}">
                         logout
                     </a>

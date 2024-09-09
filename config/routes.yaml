@@ -11,3 +11,20 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+admin_user_list:
+    path: /admin/users
+    controller: App\Controller\UserController::listUsers
+
+admin_user_add:
+    path: /admin/users/add
+    controller: App\Controller\UserController::addUser
+
+
+admin_user_edit:
+    path: /admin/users/edit/{id}
+    controller: App\Controller\UserController::editUser
+
+admin_user_delete:
+    path: /admin/users/delete/{id}
+    controller: App\Controller\UserController::deleteUser

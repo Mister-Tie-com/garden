@@ -20,12 +20,13 @@
     <div class="bg bg-left user-menu">
         <h3 class="user-loged">USER: {{ app.user.userIdentifier }}</h3>
         <div>
-            <a class="home-button home-button-logout buttons" href="{{ path('logout') }}">Logout</a>
             {% if app.request.get('_route') != 'editor' %}
                 <a class="home-button home-button-logout buttons" href="{{ path('editor') }}">Editor</a>
             {% else %}
                 <a class="home-button home-button-logout buttons" href="{{ path('map') }}">Map</a>
             {% endif %}
+            <a class="home-button home-button-logout buttons" href="{{ path('login') }}">Menu</a>
+            <a class="home-button home-button-logout buttons" href="{{ path('logout') }}">Logout</a>
         </div>
     </div>
     <div id="root"

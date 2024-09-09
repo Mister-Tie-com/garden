@@ -23,8 +23,9 @@ function Sheet({ marker, handleUpdate, handleDelete, editor, markerTypes }) {
         <div className={marker ? 'sheet-app show-sheet' : 'sheet-app'}>
             {marker && (
                 <div>
-                    <h2>{editor ? (
+                    {editor ? (
                         <input
+                            maxLength='255'
                             className='custom-input'
                             type="text"
                             value={title}
@@ -32,21 +33,23 @@ function Sheet({ marker, handleUpdate, handleDelete, editor, markerTypes }) {
                             placeholder="Enter title"
                         />
                     ) : (
-                        title
-                    )}</h2>
+                        <h2>title</h2>
+                    )}
 
-                    <p>{editor ? (
+                    {editor ? (
                         <textarea
+                            maxLength='255'
+                            rows='10'
                             className='custom-input'
                             value={description}
                             onChange={handleDescriptionChange}
                             placeholder="Enter description"
                         />
                     ) : (
-                        description
-                    )}</p>
+                        <p>description</p>
+                    )}
 
-                    <p>{editor ? (
+                   {editor ? (
                         <select className='custom-input'
                                 value={typeId}
                                 onChange={handleTypeChange}>
@@ -58,8 +61,8 @@ function Sheet({ marker, handleUpdate, handleDelete, editor, markerTypes }) {
                             ))}
                         </select>
                     ) : (
-                        marker.type_description
-                    )}</p>
+                       <p>marker.type_description</p>
+                    )}
 
                     <img
                         className='sheet-img'
