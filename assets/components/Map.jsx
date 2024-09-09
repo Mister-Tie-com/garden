@@ -4,31 +4,23 @@ import axios from 'axios';
 import Sheet from "./Sheet";
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-function Map({
-                 getSearch,
-                 getSearchMarker,
-                 getGeoloc,
-                 onEditModeChange,
-                 getEditChange
-})
-{
+function Map({ getSearch, getSearchMarker, getGeoloc, onEditModeChange, getEditChange }) {
     const mapDefaultZoom = 16;
     const maxZoomLevel = 20;
     const minZoomLevel = 6;
     const defaultViewport = [2.3522, 48.8566];
-
     const [viewport] = useState(defaultViewport);
+    const [markerTypes, setMarkerTypes] = useState([]);
+    const mapContainerRef = useRef();
+    const mapRef = useRef();
+    const cursorIconRef = useRef(null);
+
     let [popups, setPopups] = useState([]);
     let [editMode, setEditMode] = useState(false);
     let [markers] = useState([]);
     let [markersData, setMarkersData] = useState([]);
     let [selectedMarker, setSelectedMarker] = useState(null);
     let [myMarkerExist, setMyMarkerExist] = useState(false);
-
-    const [markerTypes, setMarkerTypes] = useState([]);
-    const mapContainerRef = useRef();
-    const mapRef = useRef();
-    const cursorIconRef = useRef(null);
 
     const createMyLocationMarker = (position) => {
         const latitude = position.latitude;
@@ -153,24 +145,8 @@ function Map({
         }
     };
 
-    const handleUpdate = () => {
+    const handleUpdate = (updatedMarker) => {
         if (selectedMarker) {
-            const updatedMarker = {
-                ...selectedMarker,
-                title: prompt(
-                    'Enter new title:',
-                    selectedMarker.title
-                ),
-                description: prompt(
-                    'Enter new description:',
-                    selectedMarker.description
-                ),
-                type_id: prompt(
-                    'Enter new type id:',
-                    selectedMarker.type_id
-                ),
-            };
-
             if(updatedMarker.title.length > 255) {
                 window.alert('Title too long!');
             }
@@ -226,10 +202,6 @@ function Map({
         description.textContent = data.description ? data.description : 'Pas de description';
         description.className = 'popup-description';
 
-        const typeId = document.createElement('span');
-        const searchId = markerTypes.findIndex(markerType => markerType.id === data.type_id);
-        typeId.textContent = markerTypes[searchId].description;
-        typeId.className = 'popup-type';
 
         const thumb = document.createElement('img');
         thumb.src = 'https://fakeimg.pl/50x50/';
@@ -241,16 +213,28 @@ function Map({
         const link = document.createElement('a');
         button.appendChild(link).innerHTML = "<span>Voir la fiche</span>";
 
+        const searchId = markerTypes.findIndex(markerType => markerType.id === data.type_id);
+
         button.addEventListener('click', () => {
-            data.type_description = markerTypes[searchId].description;
+            if(searchId >= 0) {
+                data.type_description = markerTypes[searchId].description;
+            }
             setSelectedMarker(data);
             marker.getPopup().remove();
         });
 
         popupContent.appendChild(title);
         popupContent.appendChild(description);
-        popupContent.appendChild(typeId);
+
+        if(searchId >= 0) {
+            const typeId = document.createElement('span');
+            typeId.textContent = markerTypes[searchId].description;
+            typeId.className = 'popup-type';
+            popupContent.appendChild(typeId);
+        }
+
         popupContent.appendChild(thumb);
+
         if(data.description || editor){
             popupContent.appendChild(button);
         }
@@ -326,7 +310,7 @@ function Map({
                 longitude: e.lngLat.lng,
                 title: prompt('Enter title:'),
                 description: prompt('Enter description:'),
-                type_id: prompt('Enter type id:')
+                type_id: null
             };
 
             axios.post('/api/markers', newMarker).then(() => {
@@ -525,7 +509,10 @@ function Map({
             )}
             <Sheet marker={selectedMarker}
                    handleUpdate={handleUpdate}
-                   handleDelete={handleDelete}></Sheet>
+                   handleDelete={handleDelete}
+                   editor={editor}
+                   markerTypes={markerTypes}
+            ></Sheet>
         </div>
     );
 }

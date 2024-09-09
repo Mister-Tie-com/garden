@@ -113,7 +113,7 @@ class Marker
         return $this->type_id;
     }
 
-    public function setTypeId(int $type_id): static
+    public function setTypeId(?int $type_id): static
     {
         $this->type_id = $type_id;
 

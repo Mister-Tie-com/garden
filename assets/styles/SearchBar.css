@@ -5,6 +5,8 @@
     margin: 5px 0;
     width: 200px;
     border-radius: 5px;
+    text-align: left;
+    font-size: 12px;
 }
 
 .custom-input:hover {

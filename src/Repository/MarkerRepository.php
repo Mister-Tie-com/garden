@@ -27,7 +27,7 @@ class MarkerRepository extends ServiceEntityRepository
      * @return array
      */
     public function findNearestMarkers(
-        UserInterface  $user,
+        UserInterface $user,
         float $latitude,
         float $longitude,
         float $radius,
