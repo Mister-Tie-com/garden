@@ -110,6 +110,10 @@ h3{
     padding: 0 !important;
 }
 
+.home-menu {
+    width: -webkit-fill-available;
+}
+
 .home-button{
     display: flex;
     padding: 10px;

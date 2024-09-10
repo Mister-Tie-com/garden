@@ -119,7 +119,6 @@ function Map({ getSearch, getSearchMarker, getGeoloc, onEditModeChange, getEditC
     };
 
     const flyToLocation = (coordinates) => {
-        console.log(coordinates);
         if (mapRef.current) {
             closeAllPopups();
             setMapInteractive(false);
@@ -330,6 +329,29 @@ function Map({ getSearch, getSearchMarker, getGeoloc, onEditModeChange, getEditC
         });
     };
 
+    const getLastPosition = () => {
+        axios.get('/api/user/last-position')
+            .then((response) => {
+                const lastPosition = response.data.lastPosition;
+                if (lastPosition && lastPosition.length === 2) {
+                    mapRef.current.setCenter([lastPosition[1], lastPosition[0]]);
+                    mapRef.current.setZoom(mapDefaultZoom);
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching last position:', error);
+            });
+    }
+
+    const saveLastPosition = () => {
+        const center = mapRef.current.getCenter();
+        const lastPosition = [center.lat, center.lng];
+
+        axios.post('/api/user/last-position', {
+            lastPosition
+        });
+    }
+
     useEffect(() => {
         axios.get('/api/marker/types')
             .then(response => setMarkerTypes(response.data))
@@ -418,6 +440,12 @@ function Map({ getSearch, getSearchMarker, getGeoloc, onEditModeChange, getEditC
     }, [markersData]);
 
     useEffect(() => {
+        if (mapRef.current) {
+
+        }
+    }, []);
+
+    useEffect(() => {
         if (!mapRef.current) {
             mapboxgl.accessToken = process.env.MAP_TOKEN;
 
@@ -433,16 +461,18 @@ function Map({ getSearch, getSearchMarker, getGeoloc, onEditModeChange, getEditC
                 antialias: false
             });
 
+            mapRef.current.on('load', () =>{
+                getLastPosition();
+                loadMarkers();
+            });
+
             mapRef.current.on('movestart', () => {
                 setSelectedMarker(null);
             });
 
             mapRef.current.on('moveend', () => {
                 loadMarkers();
-            });
-
-            mapRef.current.on('load', () =>{
-                loadMarkers();
+                saveLastPosition();
             });
 
             mapRef.current.on('style.load', () => {

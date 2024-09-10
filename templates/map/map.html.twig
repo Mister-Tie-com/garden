@@ -19,7 +19,7 @@
     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')%}
     <div class="bg bg-left user-menu">
         <h3 class="user-loged">USER: {{ app.user.userIdentifier }}</h3>
-        <div>
+        <div class="home-menu">
             {% if app.request.get('_route') != 'editor' %}
                 <a class="home-button home-button-logout buttons" href="{{ path('editor') }}">Editor</a>
             {% else %}

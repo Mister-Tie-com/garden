@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -94,5 +96,56 @@ class UserController extends AbstractController
 
         $this->addFlash('success', 'User deleted successfully.');
         return $this->redirectToRoute('admin_user_list');
+    }
+
+    #[Route('/api/user/last-position', name: 'user_last_position', methods: ['POST'])]
+    public function updateLastPosition(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        Security $security
+    ): JsonResponse {
+        $user = $security->getUser();
+        if (!$user) {
+            return new JsonResponse(['error' => 'User not authenticated'], 401);
+        }
+
+        $data = json_decode($request->getContent(), true);
+        $newLastPosition = $data['lastPosition'] ?? null;
+
+        if (is_array($newLastPosition) && count($newLastPosition) === 2) {
+            $currentLastPosition = $user->getLastPosition();
+
+            if (
+                $currentLastPosition !== null
+                && $currentLastPosition[0] == $newLastPosition[0]
+                && $currentLastPosition[1] == $newLastPosition[1]
+            ) {
+                return new JsonResponse([
+                    'message' => 'Position is the same, no update needed.'
+                ]);
+            }
+
+            $user->setLastPosition($newLastPosition);
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return new JsonResponse(['success' => true]);
+        }
+
+        return new JsonResponse(['error' => 'Invalid data'], 400);
+    }
+
+    #[Route('/api/user/last-position', name: 'get_user_last_position', methods: ['GET'])]
+    public function getLastPosition(Security $security): JsonResponse
+    {
+        $user = $security->getUser();
+        if (!$user) {
+            return new JsonResponse(['error' => 'User not authenticated'], 401);
+        }
+
+        $lastPosition = $user->getLastPosition();
+
+        return new JsonResponse(['lastPosition' => $lastPosition ?? null]);
     }
 }
