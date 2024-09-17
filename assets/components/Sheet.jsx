@@ -33,7 +33,7 @@ function Sheet({ marker, handleUpdate, handleDelete, editor, markerTypes }) {
                             placeholder="Enter title"
                         />
                     ) : (
-                        <h2>title</h2>
+                        <h2>{title}</h2>
                     )}
 
                     {editor ? (
@@ -46,7 +46,7 @@ function Sheet({ marker, handleUpdate, handleDelete, editor, markerTypes }) {
                             placeholder="Enter description"
                         />
                     ) : (
-                        <p>description</p>
+                        <p>{description}</p>
                     )}
 
                    {editor ? (
@@ -61,7 +61,7 @@ function Sheet({ marker, handleUpdate, handleDelete, editor, markerTypes }) {
                             ))}
                         </select>
                     ) : (
-                       <p>marker.type_description</p>
+                       <p>{marker.type_description}</p>
                     )}
 
                     <img
