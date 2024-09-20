@@ -2,7 +2,7 @@
     border: 1px solid var(--primary-color);
     outline:0;
     padding: 9px;
-    margin: 5px 0;
+    margin: 5px;
     width: -webkit-fill-available;
     border-radius: 5px;
     text-align: left;
@@ -17,7 +17,7 @@
     width: 100%;
     outline: 0;
     padding: 9px;
-    margin: 5px 0;
+    margin: 5px;
     border-radius: 3px;
     color: white;
     text-decoration: none;
@@ -30,8 +30,8 @@
 
 .search-bar {
     display: flex;
-    flex-direction: column;
-    width: 100%;
+    width: max-content;
+    align-items: center;
 }
 
 textarea{

@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import mapboxgl from 'mapbox-gl';
 import axios from 'axios';
 import Sheet from "./Sheet";
+import EditMarkerPopup from './EditMarkerPopup';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 function Map({ getSearch, getSearchMarker, getGeoloc, onEditModeChange, getEditChange }) {
@@ -21,6 +22,8 @@ function Map({ getSearch, getSearchMarker, getGeoloc, onEditModeChange, getEditC
     let [markersData, setMarkersData] = useState([]);
     let [selectedMarker, setSelectedMarker] = useState(null);
     let [myMarkerExist, setMyMarkerExist] = useState(false);
+    let [isPopupOpen, setIsPopupOpen] = useState(false);
+    let [popupMarker, setPopupMarker] = useState(null);
 
     const createMyLocationMarker = (position) => {
         const latitude = position.latitude;
@@ -304,18 +307,31 @@ function Map({ getSearch, getSearchMarker, getGeoloc, onEditModeChange, getEditC
         if (editMode) {
             setEditMode(false);
             onEditModeChange(false);
+
             const newMarker = {
                 latitude: e.lngLat.lat,
                 longitude: e.lngLat.lng,
-                title: prompt('Enter title:'),
-                description: prompt('Enter description:'),
+                title: '',
+                description: '',
                 type_id: null
             };
 
-            axios.post('/api/markers', newMarker).then(() => {
-                loadMarkers();
-            });
+            setPopupMarker(newMarker);
+            setIsPopupOpen(true);
+            setMapInteractive(false);
         }
+    };
+
+    const handlePopupClose = () => {
+        setIsPopupOpen(false);
+        setPopupMarker(null);
+        setMapInteractive(true);
+    };
+
+    const handleUpdateMarker = (updatedMarker) => {
+        axios.post('/api/markers', updatedMarker).then(() => {
+            loadMarkers();
+        });
     };
 
     const searchByApi = (searchQuery) => {
@@ -440,12 +456,6 @@ function Map({ getSearch, getSearchMarker, getGeoloc, onEditModeChange, getEditC
     }, [markersData]);
 
     useEffect(() => {
-        if (mapRef.current) {
-
-        }
-    }, []);
-
-    useEffect(() => {
         if (!mapRef.current) {
             mapboxgl.accessToken = process.env.MAP_TOKEN;
 
@@ -543,6 +553,14 @@ function Map({ getSearch, getSearchMarker, getGeoloc, onEditModeChange, getEditC
                    editor={editor}
                    markerTypes={markerTypes}
             ></Sheet>
+            {isPopupOpen && popupMarker && (
+                <EditMarkerPopup
+                    marker={popupMarker}
+                    onUpdate={handleUpdateMarker}
+                    onClose={handlePopupClose}
+                    markerTypes={markerTypes}
+                />
+            )}
         </div>
     );
 }
